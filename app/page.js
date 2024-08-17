@@ -114,9 +114,9 @@ export default function Home() {
   const backgroundColor = darkMode ? grey[900] : grey[100];
   const chatBackgroundColor = darkMode ? grey[800] : grey[200];
   const textColor = darkMode ? 'white' : 'black';
-  const inputTextColor = darkMode ? 'white' : 'black';
-  const inputLabelColor = darkMode ? grey[500] : grey[700];
-  const inputBorderColor = darkMode ? grey[700] : grey[500];
+  const inputTextColor = darkMode ? grey[300] : grey[900]; // Light text on dark background, dark text on light background
+  const inputLabelColor = darkMode ? grey[400] : grey[700]; // Adjust label color
+  const inputBorderColor = darkMode ? grey[700] : grey[500]; // Adjust border color
   const buttonBackgroundColor = darkMode ? grey[700] : grey[200];
   const buttonHoverBackgroundColor = darkMode ? grey[600] : grey[300];
   const avatarBackgroundColor = darkMode ? grey[700] : grey[200];
@@ -173,27 +173,33 @@ export default function Home() {
         >
           {messages.map((message, index) => (
             <Box
-              key={index}
-              display="flex"
-              justifyContent={
-                message.role === 'assistant' ? 'flex-start' : 'flex-end'
+            key={index}
+            display="flex"
+            justifyContent={
+              message.role === 'assistant' ? 'flex-start' : 'flex-end'
+            }
+          >
+            <Box
+              bgcolor={
+                message.role === 'assistant'
+                  ? darkMode
+                    ? grey[700] // Dark mode color for assistant messages
+                    : grey[300] // Light mode color for assistant messages
+                  : blue[600] // User messages background
               }
+              color={textColor}
+              borderRadius={4}
+              p={1.6}
+              margin="10px 0"
+              boxShadow="3px 3px 10px rgba(0, 0, 0, 0.5)"
             >
-              <Box
-                bgcolor={message.role === 'assistant' ? grey[700] : blue[600]}
-                color={textColor}
-                borderRadius={4}
-                p={1.6}
-                margin="10px 0"
-                boxShadow="3px 3px 10px rgba(0, 0, 0, 0.5)"
-              >
-                <Typography>{message.content}</Typography>
-              </Box>
+              <Typography>{message.content}</Typography>
             </Box>
+          </Box>
           ))}
           <div ref={messagesEndRef} />
         </Stack>
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} height="40px">
           <Button
             variant="contained"
             onClick={clearChat}
@@ -205,16 +211,11 @@ export default function Home() {
               borderRadius: 20,
               fontSize: '0.9rem',
               textTransform: 'none',
-              '& svg': {
-                fontSize: '1.2rem',
-                marginRight: '8px',
-                color: 'white',
-              },
+              border: 'none'
             }}
           >
             <span style={{ marginRight: '8px' }}>
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
                 fill="currentColor"
@@ -225,7 +226,7 @@ export default function Home() {
                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h1.5a1 1 0 0 1 1-1H14.5zM6 2h12v13H6V2z" />
               </svg>
             </span>
-            Clear Chat
+            Clear 
           </Button>
           <TextField
             label="Type your message..."
@@ -238,6 +239,11 @@ export default function Home() {
               input: { color: inputTextColor },
               label: { color: inputLabelColor },
               fieldset: { borderColor: inputBorderColor },
+              bgcolor: darkMode ? grey[800] : grey[200], // Match the image background
+              height: '100%', // Makes the input field take up the full height
+              '& .MuiOutlinedInput-root': {
+                height: '100%', // Makes the input field take up the full height
+              },
             }}
           />
           <Button
